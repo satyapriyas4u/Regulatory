@@ -1,13 +1,15 @@
 [project]
 name = "regulatory"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.1"
+description = "LangGraph-based DHF Generator"
 readme = "README.md"
 authors = [
     { name = "Satyapriya", email = "satyapriya.satyajit@merai.co" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fastapi[all]>=0.115.14",
+]
 
 [project.scripts]
 regulatory = "regulatory:main"
