@@ -36,7 +36,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
     "/",
     tags=["Root"],
     summary="Root endpoint",
-    description="""**Returns a simple welcome message for the Bio-informatics Chatbot API.**""",
+    description="""**Returns a simple welcome page.**""",
     response_class=FileResponse,
 )
 async def root():
