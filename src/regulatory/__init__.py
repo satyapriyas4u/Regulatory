@@ -1,6 +1,7 @@
 import logging
 import logging.config
-from regulatory.utils.logger import log_config
+from src.regulatory.utils.logger import log_config
+
 
 LONG_DESCRIPTION = """
 Regulatory AI Backend Project
