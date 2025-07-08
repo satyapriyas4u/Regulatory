@@ -12,10 +12,8 @@ Use the following device information to generate content for General Safety and 
 • Device Type: {device_type}
 • Intended Purpose: {intended_purpose}
 • Intended Use: {intended_use}
-• Risk Classifications:
-  - EU: {risk_classifications[EU]}
-  - US: {risk_classifications[US]}
-  - IND: {risk_classifications[IND]}
+• Region Classifications:{region_classifications}
+
 
 === Task ===
 Generate GSPR documentation for:
