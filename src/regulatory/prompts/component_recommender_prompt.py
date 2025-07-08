@@ -10,7 +10,7 @@ required for regulatory compliance of the device under:
 Use relevant ISO, ASTM, and IEC standards to support compliance.
 
 ---
-### 🔹 Inputs
+### Inputs
 - **Device Type**: {device_type}
 - **Components**: {components}
 - **Intended Purpose**: {intended_purpose}
@@ -18,16 +18,16 @@ Use relevant ISO, ASTM, and IEC standards to support compliance.
 - **Regulatory Region**: {regulatory_region}
 
 ---
-### 🔸 Your Output
+### Your Output
 
 Return **only** a valid Python `list[str]` containing **component names** that are:
 - Critical for compliance or device performance,
 - Not already listed in the user's components,
 - Expected by notified bodies or regulators for the device type and classification.
 
-❌ Do NOT explain, justify, or format the list in markdown or prose.  
-✅ Do NOT include already provided components.  
-✅ Example of correct output:
+ Do NOT explain, justify, or format the list in markdown or prose.  
+ Do NOT include already provided components.  
+ Example of correct output:
 
 
 """
