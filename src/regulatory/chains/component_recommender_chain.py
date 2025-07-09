@@ -30,7 +30,7 @@ component_recommender_llm=llm.with_structured_output(ComponentRecommenderModel)
 
 component_recommender_chain= prompt | component_recommender_llm
 
-
+'''
 device_inputs = {
     "device_type": """Total Knee Replacement System, comprising femoral component, tibial tray, tibial insert, 
 patellar component, fixation elements (screws, pegs, stems), and optional augments/spacers, 
@@ -55,4 +55,4 @@ or degenerative conditions.""",
 
 
 response = component_recommender_chain.invoke(device_inputs)
-print(response)
+print(response)'''

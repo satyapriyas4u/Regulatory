@@ -21,7 +21,7 @@ prompt=PromptTemplate(
         "component",
         "gspr"]
    )
-llm = ChatGroq(model_name="deepseek-r1-distill-llama-70b")
+llm = ChatGroq(model_name="deepseek-r1-distill-lzlama-70b")
 
 gspr_generator_llm = llm.with_structured_output(GSPRGENERATORMODEL)
 

@@ -45,4 +45,9 @@ class ComponentSection(BaseModel):
 class GSPRState(BaseModel):
     gspr_content: ComponentSection
 
+class GlobalState(TypedDict):
+    user_input: UserInputState
+    recommender: RecommenderState
+    applicable_gspr: ApplicableGSPRState
+    gspr: GSPRState
 #--------------------------------------------------------------------------------------------------
