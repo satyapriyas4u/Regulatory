@@ -7,11 +7,13 @@ import io
 from dotenv import load_dotenv
 from prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
 from models.gspr_filter_model import  GSPRStructuredResponse
-
+from langchain_community.llms import VLLMOpenAI
+from langchain.output_parsers import PydanticOutputParser
+from langchain.output_parsers import OutputFixingParser
 # Load environment variables
 load_dotenv()
 
-
+parser = PydanticOutputParser(pydantic_object=GSPRStructuredResponse)
 
 prompt = PromptTemplate(
     template=GSPR_FILTER_PROMPT,
@@ -22,14 +24,23 @@ prompt = PromptTemplate(
         "intended_users",
         "risk_classification",
         "component_name",
-    ]
+    ],
+    partial_variables={
+        "format_instructions": parser.get_format_instructions()
+    }
 )
-
+# deepseek-r1-distill-llama-70b
 llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
+# llm = VLLMOpenAI(
+#     openai_api_key="EMPTY",  # not needed for vLLM
+#     openai_api_base="http://narmada.merai.cloud:8000/v1",  # use the full base URL
+#     model_name="ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4"
+# )
 
-gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
+# gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
+fixing_parser = OutputFixingParser.from_llm(parser=parser, llm=llm)
 
-gspr_filter_chain= prompt | gspr_filter_llm
+gspr_filter_chain= prompt | llm | fixing_parser
 
 
 device_inputs = {
@@ -50,7 +61,7 @@ or degenerative conditions.""",
 
 response = gspr_filter_chain.invoke(device_inputs)
 
-
+print(response)
 
 print(f"{'GSPR':<6} {'Applicability':<15} Justification")
 print("-" * 100)
