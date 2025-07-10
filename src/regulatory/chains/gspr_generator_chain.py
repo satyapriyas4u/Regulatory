@@ -1,8 +1,8 @@
 import json
 import re
 from typing import List
-from models.gspr_generator_model import GSPRGENERATORMODEL
-from prompts.gspr_generator_prompt import GSPR_GENERATOR_PROMPT
+from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
+from regulatory.prompts.gspr_generator_prompt import GSPR_GENERATOR_PROMPT
 from langchain_groq import ChatGroq
 from langchain.schema import SystemMessage, HumanMessage
 from dotenv import load_dotenv
@@ -21,7 +21,7 @@ prompt=PromptTemplate(
         "component",
         "gspr"]
    )
-llm = ChatGroq(model_name="deepseek-r1-distill-llama-70b")
+llm = ChatGroq(model="deepseek-r1-distill-llama-70b")
 
 gspr_generator_llm = llm.with_structured_output(GSPRGENERATORMODEL)
 

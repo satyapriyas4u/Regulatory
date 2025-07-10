@@ -1,17 +1,15 @@
 import asyncio
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain.schema.runnable import RunnableParallel
 from langchain_groq import ChatGroq
 import io
 from dotenv import load_dotenv
-from prompts.component_recommender_prompt import COMPONENT_RECOMMENDER_PROMPT
-from models.component_recommender_model import ComponentRecommenderModel
+from regulatory.prompts.component_recommender_prompt import COMPONENT_RECOMMENDER_PROMPT
+from regulatory.models.component_recommender_model import ComponentRecommenderModel
 
 # Load environment variables
 load_dotenv()
-
-
 
 prompt = PromptTemplate(
     template=COMPONENT_RECOMMENDER_PROMPT,

@@ -5,9 +5,9 @@ from langchain.schema.runnable import RunnableParallel
 from langchain_groq import ChatGroq
 import io
 from dotenv import load_dotenv
-from prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
-from models.gspr_filter_model import  GSPRStructuredResponse
-from langchain_community.llms import VLLMOpenAI
+from regulatory.prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
+from regulatory.models.gspr_filter_model import  GSPRStructuredResponse
+# from langchain_community.llms import VLLMOpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.output_parsers import OutputFixingParser
 # Load environment variables
