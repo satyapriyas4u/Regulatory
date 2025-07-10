@@ -11,7 +11,7 @@ class UserInputState(TypedDict):
     intended_use: str
     intended_users: Optional[List[str]]
     components: List[str]
-    region_classification:str
+    region_classification:dict[str, str]
 
 #----------------------------------------------RecommenderState-----------------------------------------------------
 class RecommenderState(TypedDict):
