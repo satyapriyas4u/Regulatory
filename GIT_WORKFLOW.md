@@ -12,37 +12,31 @@ This workflow ensures all team members:
 
 ## Branch Flow Diagram
 
-```
+```mermaid
 gitGraph
-   direction LR
    commit id: "Initial Commit"
    branch dev
    checkout dev
    commit id: "Dev setup"
 
-   # Create feature-A and add commits
    branch feature-A
    checkout feature-A
    commit id: "Work A1"
    commit id: "Work A2"
 
-   # Create feature-B and add commits
    checkout dev
    branch feature-B
    checkout feature-B
    commit id: "Work B1"
    commit id: "Work B2"
 
-   # Merge feature-B into dev
    checkout dev
    merge feature-B id: "Merge feature-B into dev"
 
-   # Sync feature-A with latest dev and continue work
    checkout feature-A
    merge dev id: "Sync feature-A with dev"
    commit id: "Work A3"
 
-   # Final merge of feature-A into dev
    checkout dev
    merge feature-A id: "Merge feature-A into dev"
 ```
