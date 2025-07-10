@@ -1,4 +1,4 @@
-from src.regulatory.utils import helpers
+from regulatory.utils import helpers
 
 __all__ = [
     'helpers'

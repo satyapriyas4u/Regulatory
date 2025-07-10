@@ -21,25 +21,15 @@ prompt=PromptTemplate(
         "component",
         "gspr"]
    )
-llm = ChatGroq(model_name="deepseek-r1-distill-lzlama-70b")
+
+llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
 
 gspr_generator_llm = llm.with_structured_output(GSPRGENERATORMODEL)
 
 gspr_generator_chain = prompt | gspr_generator_llm
 
 
-device_inputs={
-    "device_type": "Wearable ECG Monitor",
-    "intended_purpose": "Continuous heart rhythm monitoring",
-    "intended_use": "Used on the wrist during physical activity",
-    "region_classifications": "EU",
-    "component": "Sensor",
-    "gspr": "1"
-}
 
-response = gspr_generator_chain.invoke(device_inputs)
-
-print(response)
 
 
 

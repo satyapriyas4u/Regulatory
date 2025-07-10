@@ -1,6 +1,6 @@
 from typing import Any
 from langchain_core.runnables import RunnableLambda
-from state import GlobalState
+from graph.state import GlobalState
 import json
 
 # Import your chains and models
@@ -17,7 +17,7 @@ def user_input_node(state: GlobalState) -> GlobalState:
     Reads device input JSON from 'prompt.txt' and populates GlobalState['user_input'].
     Also initializes 'given_components'.
     """
-    with open("prompt.txt", "r") as f:
+    with open("graph/prompt.txt", "r") as f:
         data = json.load(f)
     
     state["user_input"] = {
@@ -46,7 +46,7 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
         "components": "\n".join(user_input["components"]),
         "intended_purpose": user_input["intended_use"],
         "intended_users": ", ".join(user_input.get("intended_users") or []),
-        "risk_classification": user_input["region_classification"]
+        "regulatory_region": user_input["region_classification"]
     }
 
     print("📦 Input to component recommender chain:")
@@ -57,6 +57,12 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
     print("📝 Raw LLM response:", response)
 
     # Validate & parse response
+    if not isinstance(response, dict):
+    # Try converting Pydantic model to dict
+     if hasattr(response, "dict"):
+        response = response.dict()
+     else:
+        raise TypeError("Response from component_recommender_chain must be a dict or have a .dict() method.")
     if not isinstance(response, dict):
         raise TypeError("Response from component_recommender_chain must be a dict.")
     if "components_list" not in response:
@@ -77,8 +83,7 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
 from typing import cast
 from typing import cast
 from graph.state import ApplicableGSPRState
-
-
+from typing import cast
 
 def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     """
@@ -94,7 +99,7 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
         "components": "\n".join(user_input["components"]),
         "intended_purpose": user_input["intended_use"],
         "intended_users": ", ".join(user_input.get("intended_users") or []),
-        "risk_classification": user_input["region_classification"],
+        "regulatory_region": user_input["region_classification"],
         "component_name": component_name
     }
 
@@ -102,13 +107,13 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     response = gspr_filter_chain.invoke(chain_input)
     print("📝 Raw LLM response:", response)
 
-    # Validate and parse with Pydantic model
+    # Parse with Pydantic model
     if not isinstance(response, dict):
         raise ValueError(f"Expected dict response from gspr_filter_chain, got {type(response)}")
     structured = GSPRStructuredResponse(**response)
     print("✅ Parsed structured response for:", component_name)
 
-    # Build list of only applicable GSPRs
+    # Collect only applicable GSPR ids
     gspr_list = []
     for item in structured.gspr_results:
         if isinstance(item, GSPRWithSubsections):
@@ -121,20 +126,20 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
         else:
             raise TypeError(f"Unexpected item type in gspr_results: {type(item)}")
 
-    # Now make sure we follow the ApplicableGSPRState format exactly
-    applicable_state = cast(ApplicableGSPRState, state["applicable_gspr"])
-
-    # Ensure nested dict
+    # Safely update state
+    applicable_state = cast(dict, state["applicable_gspr"])
     if "applicable_gspr" not in applicable_state:
         applicable_state["applicable_gspr"] = {}
 
-    if component_name not in applicable_state["applicable_gspr"]:
-        applicable_state["applicable_gspr"][component_name] = []
+    # Fix: always assign a list if None
+    component_gspr_list = applicable_state["applicable_gspr"].get(component_name)
+    if component_gspr_list is None:
+        component_gspr_list = []
+        applicable_state["applicable_gspr"][component_name] = component_gspr_list
 
-    applicable_state["applicable_gspr"][component_name].extend(gspr_list)
-
-    # Put back into global state
-    state["applicable_gspr"] = applicable_state
+    # Append new applicable GSPRs
+    if gspr_list:
+        component_gspr_list.extend(gspr_list)
 
     print(f"🚀 Applicable GSPRs for '{component_name}': {gspr_list}")
     return state
@@ -145,7 +150,7 @@ from chains.gspr_generator_chain import gspr_generator_chain
 from models.gspr_generator_model import GSPRGENERATORMODEL
 
 
-
+#error found here , prompt is wrogly defined
 from typing import cast
 
 from models.gspr_generator_model import GSPRGENERATORMODEL
@@ -203,3 +208,19 @@ def gspr_generator_node(state: GlobalState, component_name: str) -> GlobalState:
 
     print(f"\n📦 Completed GSPR generation for '{component_name}'.")
     return state
+
+# 🔄 Run only filter + generator nodes for all components
+def f_g_node(state: GlobalState) -> GlobalState:
+    given_components = state["recommender"].get("given_components") or []
+    recommended_components = state["recommender"].get("recommended_components") or []
+    all_components = list(set(given_components + recommended_components))
+
+    print(f"\n🔄 Running filter + generator for components: {all_components}")
+
+    for component in all_components:
+        state = gspr_filter_node(state, component)
+        state = gspr_generator_node(state, component)
+
+    print("\n✅ Filter and generation completed.")
+    return state
+

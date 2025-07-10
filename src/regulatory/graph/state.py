@@ -12,6 +12,7 @@ class UserInputState(TypedDict):
     intended_use: str
     intended_users: Optional[List[str]]
     components: List[str]
+    #may be pass string
     region_classification:str
 
 #----------------------------------------------RecommenderState-----------------------------------------------------

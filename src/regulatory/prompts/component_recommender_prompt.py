@@ -25,9 +25,10 @@ Return **only** a valid Python `list[str]` containing **component names** that a
 - Not already listed in the user's components,
 - Expected by notified bodies or regulators for the device type and classification.
 
- Do NOT explain, justify, or format the list in markdown or prose.  
- Do NOT include already provided components.  
- Example of correct output:
+❌ Do NOT explain, justify, or format the list in markdown or prose.  
+❌ Do NOT include already provided components.
 
+✅ Example of correct output:
+["Femoral Component", "Polyethylene Insert", "Patella Button"]
 
 """

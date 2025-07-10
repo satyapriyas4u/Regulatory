@@ -27,6 +27,7 @@ prompt = PromptTemplate(
 
 llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
 
+
 gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
 
 gspr_filter_chain= prompt | gspr_filter_llm
@@ -62,3 +63,5 @@ for item in response.gspr_results:
             print(f"{subsection:<6} {sub.Applicability:<15} {sub.Justification}")
     else:
         print(f"{item.GSPR:<6} {item.Applicability:<15} {item.Justification}")
+
+

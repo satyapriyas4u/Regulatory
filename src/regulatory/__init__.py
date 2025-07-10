@@ -1,6 +1,6 @@
 import logging
 import logging.config
-from src.regulatory.utils.logger import log_config
+from regulatory.utils.logger import log_config
 
 
 LONG_DESCRIPTION = """

@@ -21,13 +21,13 @@ For the given component and GSPR section, generate detailed content.
 === Strict JSON Response Format ===
 Return ONLY a JSON object in this exact format, without any explanation, markdown, or extra text:
 
-{
-  "component": "<component>",
-  "gspr": <integer>,
+{{
+  "component": "{component}",
+  "gspr": {gspr},
   "design_input": "<string>",
   "applicability": "Applicable",
   "justification": "<string>",
   "requirement": "<string>",
   "standard": "<string>"
-}
+}}
 """
