@@ -18,8 +18,13 @@ prompt = PromptTemplate(
 # Load the model
 llm = get_groq_llm()
 
-# Structured output with your defined schema
-component_recommender_llm = llm.with_structured_output(ComponentRecommenderModel)
+llm = ChatOpenAI(
+    model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
+    openai_api_key="EMPTY",
+    openai_api_base="http://narmada.merai.cloud:8000/v1",
+    max_tokens=7100,
+    temperature=0,
+)
 
 # Chain
 component_recommender_chain = prompt | component_recommender_llm

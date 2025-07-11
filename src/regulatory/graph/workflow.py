@@ -11,29 +11,25 @@ from regulatory.graph.node import (
 from regulatory.graph.state import GlobalState, GSPRState, ComponentSection
 
 import json
-# -----------------------------------------------------------
-    # Initial empty state
+#
 state = GlobalState(
-        user_input={
-            "device_type": "",
-            "intended_use": "",
-            "intended_users": [],
-            "components": [],
-            "region_classification": ""
-        },
-        recommender={
-            "recommended_components": [],
-            "given_components": []
-        },
-        applicable_gspr={
-            "applicable_gspr": {}
-        },
-        gspr=GSPRState(
-            gspr_content=ComponentSection(
-                components={}
-            )
-        )
-    )
+    user_input={
+        "device_type": "",
+        "intended_use": "",
+        "intended_users": [],
+        "components": [],
+        "region_classification": ""
+    },
+    recommender={
+        "recommended_components": [],
+        "given_components": []
+    },
+    applicable_gspr={
+        "applicable_gspr": {}
+    }
+
+)
+
 workflow = StateGraph(GlobalState)
 # Add nodes
 workflow.add_node("user_input_node", user_input_node)
@@ -48,6 +44,11 @@ workflow.add_edge("main_node", END)
 
 # Compile
 chain = workflow.compile()
+chain.get_graph().draw_mermaid_png()
+png_bytes = chain.get_graph().draw_mermaid_png()
+with open("graph.png", "wb") as f:
+    f.write(png_bytes)
+
 display(Image(chain.get_graph().draw_mermaid_png()))
 
 state = chain.invoke(state)

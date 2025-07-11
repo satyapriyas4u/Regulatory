@@ -22,6 +22,15 @@ prompt=PromptTemplate(
    )
 llm = get_groq_llm()
 
+# llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
+
+llm = ChatOpenAI(
+    model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
+    openai_api_key="EMPTY",
+    openai_api_base="http://narmada.merai.cloud:8000/v1",
+    max_tokens=7100,
+    temperature=0,
+)
 
 # Use the model with structured output
 gspr_generator_llm = llm.with_structured_output(GSPRGENERATORMODEL)
