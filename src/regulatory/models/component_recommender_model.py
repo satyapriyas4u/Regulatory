@@ -3,5 +3,8 @@ from typing import List
 
 class ComponentRecommenderModel(BaseModel):
     components_list: List[str] = Field(
-        description="A list of recommended additional components essential for regulatory compliance, device safety, and performance based on the input device type and use-case."
+        description=(
+            """List of recommended components for regulatory compliance, safety, and performance.
+Each component is selected based on device type and use-case to ensure all relevant standards are met."""
+        )
     )
