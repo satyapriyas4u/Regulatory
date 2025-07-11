@@ -9,6 +9,14 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[all]>=0.115.14",
+    "ipython>=9.4.0",
+    "langchain-community>=0.3.27",
+    "langchain-openai>=0.3.27",
+    "langchain[groq]>=0.3.26",
+    "langgraph>=0.5.1",
+    "prompts>=0.0.1",
+    "pydantic>=2.11.7",
+    "uvicorn>=0.35.0",
 ]
 
 [project.scripts]

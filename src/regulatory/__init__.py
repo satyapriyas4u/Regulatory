@@ -1,6 +1,7 @@
 import logging
 import logging.config
-from regulatory.utils.logger import log_config
+from .utils.logger import log_config
+
 
 LONG_DESCRIPTION = """
 Regulatory AI Backend Project
@@ -35,12 +36,12 @@ __author__ = "StreamVision Team"
 __license__ = "MIT"
 __description__ = "AI backend services Regulatory AI Project."
 
-def main() -> None:
-    print("Hello from regulatory!")
-
 # Use your named logger
 logging.config.dictConfig(log_config)
 logger = logging.getLogger("services")
 logger.info(
     f"Regulatory AI Backend version: {__version__} - Regulatory AI is starting!"
 )
+
+def main() -> None:
+    print("Hello from regulatory!")
