@@ -10,6 +10,18 @@ from regulatory.models.gspr_filter_model import GSPRStructuredResponse, GSPRWith
 
 # Also import your gspr_filter_chain
 from regulatory.chains.gspr_filter_chain import gspr_filter_chain
+from regulatory.chains.gspr_generator_chain import gspr_generator_chain
+from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
+
+
+#error found here , prompt is wrogly defined
+from typing import cast
+
+from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
+import json
+import time
+from typing import Dict
+
 # --------------------------------------------------------------------------------
 # 📦 Node 1: Load user input from prompt.txt
 
@@ -74,6 +86,7 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
 
     # Store back to state
     state["recommender"]["recommended_components"] = model.components_list
+    state["recommender"]["recommended_components"].extend(state["user_input"]["components"])
     state["user_input"]["components"].extend(model.components_list)
 
 
@@ -154,17 +167,6 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     return state
 
 ## Node 4 : generate GSPR report
-from regulatory.chains.gspr_generator_chain import gspr_generator_chain
-from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
-
-
-#error found here , prompt is wrogly defined
-from typing import cast
-
-from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
-import json
-import time
-from typing import Dict
 
 def gspr_generator_node(state: GlobalState, component_name: str) -> GlobalState:
     user_input = state["user_input"]
