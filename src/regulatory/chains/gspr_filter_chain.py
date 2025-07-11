@@ -1,18 +1,12 @@
-import asyncio
-from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
-from langchain.schema.runnable import RunnableParallel
-from langchain_groq import ChatGroq
-import io
-from dotenv import load_dotenv
+from langchain_core.prompts import PromptTemplate
 from regulatory.prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
 from regulatory.models.gspr_filter_model import  GSPRStructuredResponse
 # from langchain_community.llms import VLLMOpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.output_parsers import OutputFixingParser
+from regulatory.llm.llm_provider import get_groq_llm
 # Load environment variables
-load_dotenv()
+
 
 parser = PydanticOutputParser(pydantic_object=GSPRStructuredResponse)
 
@@ -31,12 +25,8 @@ prompt = PromptTemplate(
     }
 )
 # deepseek-r1-distill-llama-70b
-llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
-# llm = VLLMOpenAI(
-#     openai_api_key="EMPTY",  # not needed for vLLM
-#     openai_api_base="http://narmada.merai.cloud:8000/v1",  # use the full base URL
-#     model_name="ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4"
-# )
+# Load the model
+llm = get_groq_llm()
 
 # gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
 fixing_parser = OutputFixingParser.from_llm(parser=parser, llm=llm)

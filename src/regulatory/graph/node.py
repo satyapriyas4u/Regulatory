@@ -1,7 +1,12 @@
-from typing import Any
-from langchain_core.runnables import RunnableLambda
 from regulatory.graph.state import GlobalState
 import json
+
+# 🏗️ Node 3: Filter applicable GSPR
+from typing import cast
+
+## Node 4 : generate GSPR report
+from regulatory.chains.gspr_generator_chain import gspr_generator_chain
+from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
 
 # Import your chains and models
 from regulatory.chains.component_recommender_chain import component_recommender_chain
@@ -77,14 +82,8 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
 
     return state
 
-
-# 
-# 🏗️ Node 3: Filter applicable GSPR
-from typing import cast
-from typing import cast
-from regulatory.graph.state import ApplicableGSPRState
-from typing import cast
-
+# --------------------------------------------------------------------------------
+# 🔍 Node 3: Filter GSPRs for each component
 def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     """
     Node to filter applicable GSPRs for a single component.
@@ -145,16 +144,8 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     return state
 
 
-## Node 4 : generate GSPR report
-from regulatory.chains.gspr_generator_chain import gspr_generator_chain
-from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
-
-
-#error found here , prompt is wrogly defined
-from typing import cast
-
-from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
-
+# --------------------------------------------------------------------------------
+# 🔄 Node 4: Generate GSPR content for each component
 def gspr_generator_node(state: GlobalState, component_name: str) -> GlobalState:
     user_input = state["user_input"]
     applicable_gsprs = state["applicable_gspr"]["applicable_gspr"].get(component_name) or []

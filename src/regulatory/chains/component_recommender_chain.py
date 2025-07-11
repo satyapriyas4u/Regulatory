@@ -1,12 +1,10 @@
 # File: src/regulatory/chains/component_recommender_chain.py
 
 import asyncio
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-from langchain.schema.runnable import RunnableParallel
 from regulatory.prompts.component_recommender_prompt import COMPONENT_RECOMMENDER_PROMPT
 from regulatory.models.component_recommender_model import ComponentRecommenderModel
-from regulatory.llm.llm_provider import get_llm
+from regulatory.llm.llm_provider import get_groq_llm
 
 
 # Updated prompt with only device_type and intended_purpose
@@ -16,7 +14,7 @@ prompt = PromptTemplate(
 )
 
 # Load the model
-llm = get_llm()
+llm = get_groq_llm()
 
 # Structured output with your defined schema
 component_recommender_llm = llm.with_structured_output(ComponentRecommenderModel)

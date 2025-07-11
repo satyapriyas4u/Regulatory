@@ -1,16 +1,12 @@
-from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
 from IPython.display import Image, display
 from regulatory.graph.node import (
     user_input_node,
     component_recommender_node,
-    gspr_filter_node,
-    gspr_generator_node,
     f_g_node
 )
 from regulatory.graph.state import GlobalState, GSPRState, ComponentSection
 
-import json
 # -----------------------------------------------------------
     # Initial empty state
 state = GlobalState(
