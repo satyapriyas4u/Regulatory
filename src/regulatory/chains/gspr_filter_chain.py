@@ -2,19 +2,12 @@ import asyncio
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
-from langchain.schema.runnable import RunnableParallel
-from langchain_groq import ChatGroq
-import io
 from regulatory.prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
 from regulatory.models.gspr_filter_model import  GSPRStructuredResponse
-# from langchain_community.llms import VLLMOpenAI
-from langchain.output_parsers import PydanticOutputParser
-from langchain.output_parsers import OutputFixingParser
-from regulatory.llm.llm_provider import get_groq_llm, get_vllm_llm
+# from langchain_groq import ChatGroq
+
 # Load environment variables
-
-
-parser = PydanticOutputParser(pydantic_object=GSPRStructuredResponse)
+load_dotenv()
 
 prompt = PromptTemplate(
     template=GSPR_FILTER_PROMPT,
@@ -25,17 +18,10 @@ prompt = PromptTemplate(
         "intended_users",
         "risk_classification",
         "component_name",
-    ],
-    partial_variables={
-        "format_instructions": parser.get_format_instructions()
-    }
+    ]
 )
-# deepseek-r1-distill-llama-70b
-# Load the model
-llm = get_groq_llm()
 
-# gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
-fixing_parser = OutputFixingParser.from_llm(parser=parser, llm=llm)
+# llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
 
 # Initialize LLM
 llm = ChatOpenAI(
@@ -69,7 +55,7 @@ or degenerative conditions.""",
 
 response = gspr_filter_chain.invoke(device_inputs)
 
-print(response)
+
 
 print(f"{'GSPR':<6} {'Applicability':<15} Justification")
 print("-" * 100)

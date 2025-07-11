@@ -1,5 +1,3 @@
-
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -7,14 +5,13 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
 
-from regulatory import LONG_DESCRIPTION, __version__ as VERSION
 from app.api.routes import router
-from src.regulatory.graph.workflow import run_workflow_from_input
+from src.regulatory.graph.workflow import run_workflow_from_input  # assuming this stays
 
 app = FastAPI(
     title="Regulatory AI Backend Core API",
-    version=str(VERSION),
-    description=LONG_DESCRIPTION,
+    version="0.1.0",
+    description="Backend API for generating GSPR reports based on device input.",
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -65,13 +62,11 @@ app.include_router(router)
 # ----------------------------- Local Development Entry Point -----------------------------
 if __name__ == "__main__":
     import uvicorn
-    from regulatory.utils.logger import log_config
 
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
         port=8580,
         reload=True,
-        log_config=log_config,
         log_level="info"
     )

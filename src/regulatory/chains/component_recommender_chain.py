@@ -1,22 +1,26 @@
-# File: src/regulatory/chains/component_recommender_chain.py
-
 import asyncio
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
-from langchain.schema.runnable import RunnableParallel
+from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
+from dotenv import load_dotenv
 from regulatory.prompts.component_recommender_prompt import COMPONENT_RECOMMENDER_PROMPT
 from regulatory.models.component_recommender_model import ComponentRecommenderModel
-from regulatory.llm.llm_provider import get_groq_llm, get_vllm_llm
+# from langchain_groq import ChatGroq
 
+# Load environment variables
+load_dotenv()
 
-# Updated prompt with only device_type and intended_purpose
 prompt = PromptTemplate(
     template=COMPONENT_RECOMMENDER_PROMPT,
-    input_variables=["device_type", "intended_purpose"]
+    input_variables=[
+        "device_type",
+        "components",
+        "intended_purpose",
+        "intended_users",
+        "risk_classification"
+    ]
 )
 
-# Load the model
-llm = get_groq_llm()
+# llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
 
 llm = ChatOpenAI(
     model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
@@ -26,22 +30,33 @@ llm = ChatOpenAI(
     temperature=0,
 )
 
-# Chain
-component_recommender_chain = prompt | component_recommender_llm
+component_recommender_llm=llm.with_structured_output(ComponentRecommenderModel)
 
-async def main():
-    device_inputs = {
-        "device_type": "Total Knee Replacement System",
-        "intended_purpose": "Restore knee joint function by replacing damaged articular surfaces to relieve pain and improve mobility in patients with severe osteoarthritis."
-    }
+component_recommender_chain= prompt | component_recommender_llm
 
-    response = await component_recommender_chain.ainvoke(device_inputs)
-    print(response)
+'''
+device_inputs = {
+    "device_type": """Total Knee Replacement System, comprising femoral component, tibial tray, tibial insert, 
+patellar component, fixation elements (screws, pegs, stems), and optional augments/spacers, 
+constructed from MoCs such as CoCrMo, titanium alloys, UHMWPE, and ceramics, 
+with optional coatings (e.g., hydroxyapatite, titanium plasma spray).""",
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    "components": """o Femoral Component (Condyles): CoCrMo, titanium alloy, or ceramic, coated or uncoated.
+o Tibial Tray: Titanium alloy or CoCrMo, coated or uncoated.
+o Tibial Insert: UHMWPE, fixed or mobile-bearing.
+o Patellar Component (Button): UHMWPE or ceramic.
+o Fixation Elements (Screws, Pegs, Stems): Titanium alloy or CoCrMo, coated or uncoated.
+o Augments/Spacers: Titanium alloy, CoCrMo, or UHMWPE, for bone defects or alignment.""",
+
+    "intended_purpose": """Restore knee joint function by replacing damaged articular surfaces, 
+providing pain relief, mobility, and stability in patients with severe knee osteoarthritis 
+or degenerative conditions.""",
+
+    "intended_users": """Trained orthopedic surgeons in hospitals and surgical centers""",
+
+    "regulatory_region": """EU"""
+}
 
 
-# Run the script to test the component recommender chain
-# python -m regulatory.chains.component_recommender_chain or
-# uv run -m regulatory.chains.component_recommender_chain
+response = component_recommender_chain.invoke(device_inputs)
+print(response)'''
