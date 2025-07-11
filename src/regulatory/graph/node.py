@@ -88,6 +88,14 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
     state["recommender"]["recommended_components"] = model.components_list
     state["recommender"]["recommended_components"].extend(state["user_input"]["components"])
     state["user_input"]["components"].extend(model.components_list)
+    container=set (state["user_input"]["components"])
+    state["user_input"]["components"]=list(container)
+    container=set (state["recommender"]["recommended_components"])
+    state["recommender"]["recommended_components"]=list(container)
+
+
+
+    
 
 
     return state
