@@ -28,7 +28,7 @@ llm = ChatOpenAI(
     model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
     openai_api_key="EMPTY",                       # any non‑empty string is fine
     openai_api_base="http://narmada.merai.cloud:8000/v1",
-    max_tokens=3200,
+    max_tokens=7100,
     temperature=0,
 )
 
@@ -36,7 +36,7 @@ gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
 
 gspr_filter_chain= prompt | gspr_filter_llm
 
-
+'''
 device_inputs = {
     "device_type": """Total Knee Replacement System""",
 
@@ -67,3 +67,5 @@ for item in response.gspr_results:
             print(f"{subsection:<6} {sub.Applicability:<15} {sub.Justification}")
     else:
         print(f"{item.GSPR:<6} {item.Applicability:<15} {item.Justification}")
+
+'''

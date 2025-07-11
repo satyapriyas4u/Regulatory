@@ -16,6 +16,7 @@ dependencies = [
     "langgraph>=0.5.1",
     "prompts>=0.0.1",
     "pydantic>=2.11.7",
+    "uvicorn>=0.35.0",
 ]
 
 [project.scripts]

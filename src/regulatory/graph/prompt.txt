@@ -1,9 +1,9 @@
 {
-  "device_type": "Total Knee Replacement System, comprising femoral component, tibial tray, tibial insert, patellar component, fixation elements (screws, pegs, stems), and optional augments/spacers, constructed from MoCs such as CoCrMo, titanium alloys, UHMWPE, and ceramics, with optional coatings (e.g., hydroxyapatite, titanium plasma spray).",
+  "device_type": ", comprising femoral component, tibial tray, tibial insert, patellar component, fixation elements (screws, pegs, stems), and optional augments/spacers, constructed from MoCs such as CoCrMo, titanium alloys, UHMWPE, and ceramics, with optional coatings (e.g., hydroxyapatite, titanium plasma spray).",
   
   "components": [
-    "Femoral Component (Condyles): CoCrMo, titanium alloy, or ceramic, coated or uncoated.",
     "Tibial Tray: Titanium alloy or CoCrMo, coated or uncoated.",
+    "Femoral Component (Condyles): CoCrMo, titanium alloy, or ceramic, coated or uncoated.",
     "Tibial Insert: UHMWPE, fixed or mobile-bearing.",
     "Patellar Component (Button): UHMWPE or ceramic.",
     "Fixation Elements (Screws, Pegs, Stems): Titanium alloy or CoCrMo, coated or uncoated.",

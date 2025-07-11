@@ -24,7 +24,7 @@ llm = ChatOpenAI(
     model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
     openai_api_key="EMPTY",
     openai_api_base="http://narmada.merai.cloud:8000/v1",
-    max_tokens=3200,
+    max_tokens=7100,
     temperature=0,
 )
 
