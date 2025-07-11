@@ -11,7 +11,8 @@ class UserInputState(TypedDict):
     intended_use: str
     intended_users: Optional[List[str]]
     components: List[str]
-    region_classification:dict[str, str]
+    #may be pass string
+    region_classification:str
 
 #----------------------------------------------RecommenderState-----------------------------------------------------
 class RecommenderState(TypedDict):
@@ -44,4 +45,9 @@ class ComponentSection(BaseModel):
 class GSPRState(BaseModel):
     gspr_content: ComponentSection
 
+class GlobalState(TypedDict):
+    user_input: UserInputState
+    recommender: RecommenderState
+    applicable_gspr: ApplicableGSPRState
+    gspr: GSPRState
 #--------------------------------------------------------------------------------------------------

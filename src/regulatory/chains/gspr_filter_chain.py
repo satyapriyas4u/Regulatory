@@ -1,4 +1,5 @@
 import asyncio
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
 from langchain.schema.runnable import RunnableParallel
