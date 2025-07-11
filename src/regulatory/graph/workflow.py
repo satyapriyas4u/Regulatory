@@ -1,14 +1,14 @@
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
 from IPython.display import Image, display
-from graph.node import (
+from regulatory.graph.node import (
     user_input_node,
     component_recommender_node,
     gspr_filter_node,
     gspr_generator_node,
     f_g_node
 )
-from graph.state import GlobalState, GSPRState, ComponentSection
+from regulatory.graph.state import GlobalState, GSPRState, ComponentSection
 
 import json
 # -----------------------------------------------------------
@@ -51,8 +51,3 @@ chain = workflow.compile()
 display(Image(chain.get_graph().draw_mermaid_png()))
 
 state = chain.invoke(state)
-
-
-
-
-

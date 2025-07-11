@@ -1,17 +1,13 @@
 import asyncio
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
-from langchain.schema.runnable import RunnableParallel
-from langchain_groq import ChatGroq
-import io
 from dotenv import load_dotenv
-from prompts.component_recommender_prompt import COMPONENT_RECOMMENDER_PROMPT
-from models.component_recommender_model import ComponentRecommenderModel
+from regulatory.prompts.component_recommender_prompt import COMPONENT_RECOMMENDER_PROMPT
+from regulatory.models.component_recommender_model import ComponentRecommenderModel
+# from langchain_groq import ChatGroq
 
 # Load environment variables
 load_dotenv()
-
-
 
 prompt = PromptTemplate(
     template=COMPONENT_RECOMMENDER_PROMPT,
@@ -24,7 +20,15 @@ prompt = PromptTemplate(
     ]
 )
 
-llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
+# llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
+
+llm = ChatOpenAI(
+    model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
+    openai_api_key="EMPTY",
+    openai_api_base="http://narmada.merai.cloud:8000/v1",
+    max_tokens=3200,
+    temperature=0,
+)
 
 component_recommender_llm=llm.with_structured_output(ComponentRecommenderModel)
 

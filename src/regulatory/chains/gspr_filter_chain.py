@@ -1,17 +1,13 @@
 import asyncio
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate,ChatPromptTemplate
-from langchain.schema.runnable import RunnableParallel
-from langchain_groq import ChatGroq
-import io
-from dotenv import load_dotenv
-from prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
-from models.gspr_filter_model import  GSPRStructuredResponse
+from regulatory.prompts.gspr_filter_prompt import GSPR_FILTER_PROMPT
+from regulatory.models.gspr_filter_model import  GSPRStructuredResponse
+# from langchain_groq import ChatGroq
 
 # Load environment variables
 load_dotenv()
-
-
 
 prompt = PromptTemplate(
     template=GSPR_FILTER_PROMPT,
@@ -25,8 +21,16 @@ prompt = PromptTemplate(
     ]
 )
 
-llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
+# llm=ChatGroq(model="deepseek-r1-distill-llama-70b")
 
+# Initialize LLM
+llm = ChatOpenAI(
+    model="unsloth/DeepSeek-R1-Distill-Llama-70B-bnb-4bit",
+    openai_api_key="EMPTY",                       # any non‑empty string is fine
+    openai_api_base="http://narmada.merai.cloud:8000/v1",
+    max_tokens=3200,
+    temperature=0,
+)
 
 gspr_filter_llm=llm.with_structured_output(GSPRStructuredResponse)
 
@@ -63,5 +67,3 @@ for item in response.gspr_results:
             print(f"{subsection:<6} {sub.Applicability:<15} {sub.Justification}")
     else:
         print(f"{item.GSPR:<6} {item.Applicability:<15} {item.Justification}")
-
-

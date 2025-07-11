@@ -1,15 +1,15 @@
 from typing import Any
 from langchain_core.runnables import RunnableLambda
-from graph.state import GlobalState
+from regulatory.graph.state import GlobalState
 import json
 
 # Import your chains and models
-from chains.component_recommender_chain import component_recommender_chain
-from models.component_recommender_model import ComponentRecommenderModel
-from models.gspr_filter_model import GSPRStructuredResponse, GSPRWithSubsections, GSPRItem
+from regulatory.chains.component_recommender_chain import component_recommender_chain
+from regulatory.models.component_recommender_model import ComponentRecommenderModel
+from regulatory.models.gspr_filter_model import GSPRStructuredResponse, GSPRWithSubsections, GSPRItem
 
 # Also import your gspr_filter_chain
-from chains.gspr_filter_chain import gspr_filter_chain
+from regulatory.chains.gspr_filter_chain import gspr_filter_chain
 # --------------------------------------------------------------------------------
 # 📦 Node 1: Load user input from prompt.txt
 def user_input_node(state: GlobalState) -> GlobalState:
@@ -17,7 +17,7 @@ def user_input_node(state: GlobalState) -> GlobalState:
     Reads device input JSON from 'prompt.txt' and populates GlobalState['user_input'].
     Also initializes 'given_components'.
     """
-    with open("graph/prompt.txt", "r") as f:
+    with open("src/regulatory/graph/prompt.txt", "r") as f:
         data = json.load(f)
     
     state["user_input"] = {
@@ -82,7 +82,7 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
 # 🏗️ Node 3: Filter applicable GSPR
 from typing import cast
 from typing import cast
-from graph.state import ApplicableGSPRState
+from regulatory.graph.state import ApplicableGSPRState
 from typing import cast
 
 def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
@@ -146,14 +146,14 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
 
 
 ## Node 4 : generate GSPR report
-from chains.gspr_generator_chain import gspr_generator_chain
-from models.gspr_generator_model import GSPRGENERATORMODEL
+from regulatory.chains.gspr_generator_chain import gspr_generator_chain
+from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
 
 
 #error found here , prompt is wrogly defined
 from typing import cast
 
-from models.gspr_generator_model import GSPRGENERATORMODEL
+from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
 
 def gspr_generator_node(state: GlobalState, component_name: str) -> GlobalState:
     user_input = state["user_input"]
