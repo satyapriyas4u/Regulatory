@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version-file: pyproject.toml
-          cache: pip
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
@@ -51,7 +50,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version-file: pyproject.toml
-          cache: pip
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
@@ -76,7 +74,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version-file: pyproject.toml
-          cache: pip
 
       - name: Setup uv & dependencies
         uses: astral-sh/setup-uv@v6
