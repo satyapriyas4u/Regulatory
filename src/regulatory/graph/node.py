@@ -1,26 +1,23 @@
-from typing import Any
+from typing import Any, Dict, cast
 from langchain_core.runnables import RunnableLambda
 from regulatory.graph.state import GlobalState
 import json
+import time
+
 
 # Import your chains and models
 from regulatory.chains.component_recommender_chain import component_recommender_chain
 from regulatory.models.component_recommender_model import ComponentRecommenderModel
 from regulatory.models.gspr_filter_model import GSPRStructuredResponse, GSPRWithSubsections, GSPRItem
 
-# Also import your gspr_filter_chain
+
 from regulatory.chains.gspr_filter_chain import gspr_filter_chain
 from regulatory.chains.gspr_generator_chain import gspr_generator_chain
 from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
+from regulatory.graph.state import ApplicableGSPRState
 
 
-#error found here , prompt is wrogly defined
-from typing import cast
 
-from regulatory.models.gspr_generator_model import GSPRGENERATORMODEL
-import json
-import time
-from typing import Dict
 
 # --------------------------------------------------------------------------------
 # 📦 Node 1: Load user input from prompt.txt
@@ -92,23 +89,11 @@ def component_recommender_node(state: GlobalState) -> GlobalState:
     state["user_input"]["components"]=list(container)
     container=set (state["recommender"]["recommended_components"])
     state["recommender"]["recommended_components"]=list(container)
-
-
-
-    
-
-
     return state
 
+# --------------------------------------------------------------------------------
 # 🏗️ Node 3: Filter applicable GSPR
 
-from typing import cast
-from typing import cast
-from regulatory.graph.state import ApplicableGSPRState
-from typing import cast
-
-import time
-import time
 
 def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     """
@@ -173,7 +158,8 @@ def gspr_filter_node(state: GlobalState, component_name: str) -> GlobalState:
     print(f"🚀 Applicable GSPRs for '{component_name}': {gspr_list}")
 
     return state
-
+    
+# --------------------------------------------------------------------------------
 ## Node 4 : generate GSPR report
 
 def gspr_generator_node(state: GlobalState, component_name: str) -> GlobalState:
