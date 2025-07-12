@@ -28,13 +28,11 @@ jobs:
       - name: Sync dev dependencies
         run: uv sync --locked --group dev
 
-      - name: Run Ruff (check)
-        run: uv run ruff check --format=github .
-
-      - name: Try auto-fix with Ruff
-        run: |
-          uv run ruff check --fix .
-        continue-on-error: true
+      - name: Install & Run Ruff (lint & autofix)
+        uses: astral-sh/ruff-action@v3
+        with:
+          version: "latest"
+          args: check --output-format=github --fix .
 
       - name: Commit autofixes (if any)
         if: github.event_name == 'push'
@@ -98,4 +96,3 @@ jobs:
         with:
           name: coverage-report
           path: .
-
