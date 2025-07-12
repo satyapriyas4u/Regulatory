@@ -22,7 +22,7 @@ jobs:
           enable-cache: true     # Optional cache improvement
 
       - name: Setup Python using pyproject.toml
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version-file: pyproject.toml
 
