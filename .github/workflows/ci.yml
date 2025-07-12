@@ -84,15 +84,22 @@ jobs:
       - name: Sync all deps
         run: uv sync --locked --all-extras
 
-      - name: Run pytest with coverage
-        run: uv run coverage run -m pytest
+      - name: Run pytest
+        run: uv run pytest
 
-      - name: Generate coverage report
-        run: uv run coverage report
+      # Uncomment below to enable coverage reporting in future
+      # - name: Install coverage
+      #   run: uv pip install coverage
 
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: .
+      # - name: Run pytest with coverage
+      #   run: uv run coverage run -m pytest
+
+      # - name: Generate coverage report
+      #   run: uv run coverage report
+
+      # - name: Upload coverage report
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: coverage-report
+      #     path: .
