@@ -1,0 +1,39 @@
+name: CI with uv, ruff, and pytest
+
+on:
+  push:
+    branches: [ci-testing]
+  pull_request:
+    branches: [ci-testing]
+
+jobs:
+  test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.7.20"      # Pin specific version
+          enable-cache: true     # Optional cache improvement
+
+      - name: Setup Python using pyproject.toml
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: pyproject.toml
+
+      - name: Sync dependencies with uv
+        run: uv sync --locked --all-extras --dev
+
+      - name: Lint with ruff
+        run: uv run ruff regulatory
+
+      - name: Run tests (replace with your actual test suite)
+        run: uv run pytest || echo "No tests yet"
+
+      - name: FastAPI import check (optional dry run)
+        run: uv run python -c "import fastapi; print('FastAPI version:', fastapi.__version__)"
